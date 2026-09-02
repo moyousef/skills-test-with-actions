@@ -1,0 +1,37 @@
+# GitHub Actions workflow for CI checks
+
+name: Continuous Integration
+
+# Defines when this workflow should run
+on:
+  # Run on pushes to the main branch
+  push:
+    branches:
+      - main
+
+  # Run on pull requests targeting the main branch
+  pull_request:
+    branches:
+      - main
+
+  # Allows manual execution from the Actions tab
+  workflow_dispatch:
+
+# Workflow jobs
+jobs:
+  # Build and lint job
+  build:
+    # Use the latest Ubuntu runner
+    runs-on: ubuntu-latest
+
+    # Steps executed by the job
+    steps:
+      # Checkout repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Install dependencies and validate Markdown files
+      - name: Run Markdown lint check
+        run: |
+          npm install remark-cli remark-preset-lint-consistent
+          npx remark . --use remark-preset-lint-consistent
